@@ -1,7 +1,4 @@
-def get_input():
-    with open('input.txt') as f:
-        lines = f.readlines()
-        return lines
+from util_funs import get_input
 
 lines = get_input()
 
@@ -12,7 +9,8 @@ for line in lines:
         aggregation[dir] = aggregation[dir] + int(value)
     else:
         aggregation[dir] = int(value)
-
+print(aggregation["down"])
+print(aggregation["up"])
 depth = aggregation["down"] - aggregation["up"]
 result = aggregation["forward"] * depth
 print(result)
