@@ -14,18 +14,19 @@ old_max = 0
 max_values = []
 temp_values = []
 counter = 0
+top_elves = [0, 0, 0]
 for x in strippedValues:
     temp_values.append(x)
     if(x == ''):
         counter = counter + 1
-        if(max > old_max):
+        if(max > top_elves[0]):
             print(max)
-            old_max = max
+            top_elves[0] = max
             max_values = temp_values
+            top_elves.sort()
         temp_values = []
         max = 0
     else:
         max = max + int(x)
-print("old max: ", old_max)
-print(max_values)
-print(counter)
+print("Elf carriying the most food: ", top_elves[2], "sum: ", sum(top_elves))
+print("Top 3 elves carrying most food: ", top_elves)
