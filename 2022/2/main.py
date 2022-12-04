@@ -1,3 +1,4 @@
+from difflib import Match
 from enum import Enum, IntEnum
 
 from numpy import mat
@@ -53,6 +54,47 @@ for line in lines:
     
     enemyHandsign = identifyHandsign(line[0])
     playerHandsign = identifyHandsign(line[2])
+    matchResult = evaluateMatch(playerHandsign, enemyHandsign)
+    print("______________")
+    print("enemyHandsign: ", enemyHandsign)
+    print("playerHandsign: ", playerHandsign)
+    print("matchResult: ", matchResult)
+    scoreAddition = 0
+    if(matchResult == MatchOutcome.WIN):
+        scoreAddition = 6 + int(playerHandsign)
+    elif(matchResult == MatchOutcome.DRAW):
+        scoreAddition = 3 + int(playerHandsign)
+    else:
+        scoreAddition = int(playerHandsign)
+    print(scoreAddition)
+    total = total + scoreAddition
+
+print("Total: ", total)
+
+
+
+def identifyOutcome(char):
+    if(char == 'X'):
+        return MatchOutcome.LOSE
+    if(char == 'Y'):
+        return MatchOutcome.DRAW
+    if(char == 'Z'):
+        return MatchOutcome.WIN
+
+def getPlayerHandsign(sign, outcome):
+    if(outcome == evaluateMatch(Sign.ROCK, sign)):
+        return Sign.ROCK
+    if(outcome == evaluateMatch(Sign.PAPER, sign)):
+        return Sign.PAPER
+    if(outcome == evaluateMatch(Sign.SCISSOR, sign)):
+        return Sign.SCISSOR  
+
+total = 0
+for line in lines:
+    
+    enemyHandsign = identifyHandsign(line[0])
+    outcome = identifyOutcome(line[2])
+    playerHandsign = getPlayerHandsign(enemyHandsign, outcome)
     matchResult = evaluateMatch(playerHandsign, enemyHandsign)
     print("______________")
     print("enemyHandsign: ", enemyHandsign)
