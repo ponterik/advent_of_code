@@ -1,5 +1,5 @@
 import re
-
+import pprint
 def get_input(path):
     with open(path) as f:
         lines = f.readlines()
@@ -35,7 +35,7 @@ for row in stacks:
             stacks_dict[c] = [row[i]] + stacks_dict[c]
 
 
-
+batched_crates = stacks_dict
 cleaned_moves = []
 for move in moves:
     moves_to_append = []
@@ -52,16 +52,41 @@ def moveCrate(destination, origin):
     stacks_dict[destination].append(crate)
 
 def moveCreates(destination, origin, times):
-    for i in range(0, int(times)):
+    for _ in range(0, int(times)):
         moveCrate(destination, origin)
 
-for move in cleaned_moves:
-    moveCreates(destination=move[2], origin=move[1], times = move[0])
+#for move in cleaned_moves:
+#    moveCreates(destination=move[2], origin=move[1], times = move[0])
 
-def getTopCreates():
+def getTopCreates(crates):
     top_values = ""
-    for (k, v) in stacks_dict.items():
+    for (k, v) in crates.items():
         top_values = top_values + v[len(v)-1]
     return top_values
 
-print("Top creates: " + getTopCreates())
+print("Top creates: " + getTopCreates(stacks_dict))
+
+
+
+
+def move_batch(destination, origin, times):
+    crate_stack = batched_crates[origin]
+    print(crate_stack)
+    print(destination, origin, times)
+    moved_stack = crate_stack[(len(crate_stack) - int(times)):]
+    print("moving")
+    print(moved_stack)
+    print("to ", destination, " from ", origin)
+    print("Should be ", times, " elements")
+    batched_crates[origin] = crate_stack[:(len(crate_stack) - int(times))]
+    batched_crates[destination] = batched_crates[destination] + moved_stack
+
+last_move = []
+num_moves = 0
+for move in cleaned_moves:
+    pprint.pprint("_________________")
+    pprint.pprint(batched_crates)
+    move_batch(destination=move[2], origin=move[1], times = move[0])
+    pprint.pprint(batched_crates)
+    
+pprint.pprint(getTopCreates(batched_crates))
